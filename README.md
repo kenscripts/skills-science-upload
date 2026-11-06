@@ -30,7 +30,3 @@ git clone https://github.com/kenscripts/skills-science-upload.git
 mkdir -p ~/.claude/skills
 cp -r skills-science-upload/upload-ncbi-sra ~/.claude/skills/
 ```
-
-## Author
-
-Kenneth Acosta
