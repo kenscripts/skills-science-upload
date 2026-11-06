@@ -47,7 +47,7 @@ For one project only, use `<project>/.claude/skills/` instead.
 
 Installing a skill does not install its dependencies.
 
-- `upload-ncbi-sra`: Python 3 with `openpyxl` and `pandas`; `cutadapt` for demultiplexing.
+- `upload-ncbi-sra`: Python 3.10+ with `openpyxl` and `pandas`; `cutadapt` for demultiplexing. The same list is in the skill's `compatibility` field.
 
 ```bash
 pip install openpyxl pandas cutadapt

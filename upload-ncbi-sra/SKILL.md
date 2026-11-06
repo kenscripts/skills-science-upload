@@ -1,6 +1,7 @@
 ---
 name: upload-ncbi-sra
 description: Fill NCBI BioSample and SRA submission templates from a user's curated sample/library metadata file (Excel/TSV), including choosing the correct BioSample package (MIMARKS, MIMS, MIGS, Plant, etc.), mapping fields, validating cross-links, checking a folder of FASTQ libraries for pooled files, and demultiplexing them into per-sample files. Use this skill whenever the user is depositing sequencing data at NCBI — mentions SRA, BioSample, BioProject, the NCBI Submission Portal, MIxS/MIMARKS/MIMS packages, "SRA metadata", accession numbers for a paper, or wants to turn their sample sheet / supplementary metadata table into submission spreadsheets, or asks whether sequencing files need demultiplexing before upload — even if they only ask about one piece (e.g. "which BioSample package should I pick?").
+compatibility: Requires Python 3.10+ with openpyxl and pandas (pip install openpyxl pandas); cutadapt to demultiplex FASTQ files (pip install cutadapt); web access recommended to check the live NCBI pages.
 metadata:
   author: Kenneth Acosta
   version: "1.00"
@@ -15,6 +16,18 @@ internally consistent and ready to export as TSV for the Submission Portal.
 The user's metadata file is the source of truth. Never invent values; when a
 field needs a judgement call (ontology term, organism name, instrument), fill
 your best-supported value, highlight the cell, and list it in the summary.
+
+## Requirements
+
+- Python 3.10+ with `openpyxl` and `pandas` (`pip install openpyxl pandas`)
+- `cutadapt`, only to demultiplex pooled FASTQ files (`pip install cutadapt`)
+- Web access, recommended, to check the live NCBI pages (section 0)
+
+Before the first step, check what is installed:
+`python3 -c "import sys, openpyxl, pandas; assert sys.version_info >= (3, 10)"`
+and, only if FASTQ files need demultiplexing, `cutadapt --version`. If
+something is missing, tell the user which package and the `pip install`
+command; do not install anything silently.
 
 ## 0. Check the live NCBI pages first
 
