@@ -23,7 +23,37 @@ Each skill is a folder named after the skill:
 
 ## Install
 
-Copy or symlink a skill folder into `~/.claude/skills/`, for example `ln -s "$PWD/upload-ncbi-sra" ~/.claude/skills/`.
+With [`npx`](https://docs.npmjs.com/cli/commands/npx) (Node.js):
+
+```bash
+npx skills add kenscripts/skills-science-upload                     # choose skills and agent interactively
+npx skills add kenscripts/skills-science-upload --list              # show the skills without installing
+npx skills add kenscripts/skills-science-upload --skill upload-ncbi-sra -a claude-code -y
+```
+
+This installs into the current project (`./.claude/skills/`). Tested with Claude Code; the tool also supports other agents.
+
+Or manually, for all your projects:
+
+```bash
+git clone https://github.com/kenscripts/skills-science-upload.git
+mkdir -p ~/.claude/skills
+cp -r skills-science-upload/upload-ncbi-sra ~/.claude/skills/    # or ln -s to follow git pull
+```
+
+For one project only, use `<project>/.claude/skills/` instead.
+
+## Requirements
+
+Installing a skill does not install its dependencies.
+
+- `upload-ncbi-sra`: Python 3 with `openpyxl` and `pandas`; `cutadapt` for demultiplexing.
+
+```bash
+pip install openpyxl pandas cutadapt
+```
+
+Skills run with full agent permissions, so read a skill before using it.
 
 ## Author
 
