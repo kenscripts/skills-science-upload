@@ -31,14 +31,6 @@ mkdir -p ~/.claude/skills
 cp -r skills-science-upload/upload-ncbi-sra ~/.claude/skills/
 ```
 
-## Requirements
-
-Installing a skill does not install its dependencies. `upload-ncbi-sra` needs Python 3.10+ with `openpyxl` and `pandas`, plus `cutadapt` to demultiplex FASTQ files:
-
-```bash
-pip install openpyxl pandas cutadapt
-```
-
 ## Author
 
 Kenneth Acosta
