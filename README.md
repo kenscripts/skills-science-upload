@@ -8,52 +8,36 @@ Claude skills for preparing and uploading data, and other materials, to public r
 |-------|--------------|---------|
 | [`upload-ncbi-sra`](upload-ncbi-sra/SKILL.md) | Fill NCBI BioSample and SRA submission templates from curated metadata, validate cross-links, and check and demultiplex FASTQ files | 1.00 |
 
-New upload skills for other repositories or sites are added as sibling folders, each with its own `SKILL.md`.
-
-## Layout
-
-Each skill is a folder named after the skill:
-
-```
-<skill-name>/
-├── SKILL.md      instructions and frontmatter
-├── references/   background notes loaded when needed
-└── scripts/      helper scripts the skill runs
-```
-
 ## Install
 
-With [`npx`](https://docs.npmjs.com/cli/commands/npx) (Node.js):
+Skills run with full agent permissions, so read a skill before using it.
+
+### With npx (Node.js)
+
+Installs into the current project (`./.claude/skills/`); tested with Claude Code. Omit `--skill` and `-a` to choose interactively.
 
 ```bash
-npx skills add kenscripts/skills-science-upload                     # choose skills and agent interactively
-npx skills add kenscripts/skills-science-upload --list              # show the skills without installing
+npx skills add kenscripts/skills-science-upload --list
 npx skills add kenscripts/skills-science-upload --skill upload-ncbi-sra -a claude-code -y
 ```
 
-This installs into the current project (`./.claude/skills/`). Tested with Claude Code; the tool also supports other agents.
+### Manually
 
-Or manually, for all your projects:
+Clone, then copy into `~/.claude/skills/` for all projects or `<project>/.claude/skills/` for one project. Use `ln -s` instead of `cp -r` to follow `git pull`.
 
 ```bash
 git clone https://github.com/kenscripts/skills-science-upload.git
 mkdir -p ~/.claude/skills
-cp -r skills-science-upload/upload-ncbi-sra ~/.claude/skills/    # or ln -s to follow git pull
+cp -r skills-science-upload/upload-ncbi-sra ~/.claude/skills/
 ```
-
-For one project only, use `<project>/.claude/skills/` instead.
 
 ## Requirements
 
-Installing a skill does not install its dependencies.
-
-- `upload-ncbi-sra`: Python 3.10+ with `openpyxl` and `pandas`; `cutadapt` for demultiplexing. The same list is in the skill's `compatibility` field.
+Installing a skill does not install its dependencies. `upload-ncbi-sra` needs Python 3.10+ with `openpyxl` and `pandas`, plus `cutadapt` to demultiplex FASTQ files:
 
 ```bash
 pip install openpyxl pandas cutadapt
 ```
-
-Skills run with full agent permissions, so read a skill before using it.
 
 ## Author
 
