@@ -1,0 +1,60 @@
+name: repo-counts
+
+# Adds this repo's daily clone and view counts to running totals kept in a gist.
+# The gist files <repo>-clones.json and <repo>-views.json feed the badges in README.md.
+# Secrets: TRAFFIC_TOKEN (fine-grained, Administration: read, this repo),
+#          GIST_TOKEN (classic, gist scope only), GIST_ID (id of the gist).
+
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  count-traffic:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Merge new clone and view counts into the gist
+        env:
+          TRAFFIC_TOKEN: ${{ secrets.TRAFFIC_TOKEN }}
+          GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
+          GIST_ID: ${{ secrets.GIST_ID }}
+          REPO: ${{ github.repository }}
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          set -euo pipefail
+
+          # kind is the traffic API endpoint ("clones" or "views"), which is also the
+          # key holding its per-day list in the response and the badge label.
+          update_gist_counts() {
+            local kind="$1" days_file="$2" badge_file="$3"
+
+            # GitHub keeps only the last 14 days of counts.
+            local recent_days
+            recent_days=$(GH_TOKEN="$TRAFFIC_TOKEN" gh api "repos/${REPO}/traffic/${kind}" \
+              | jq --arg k "$kind" '[.[$k][] | {key: .timestamp[0:10], value: .count}] | from_entries')
+
+            # Days already stored in the gist (empty on the first run).
+            local stored_days
+            stored_days=$(GH_TOKEN="$GIST_TOKEN" gh api "gists/${GIST_ID}" \
+              | jq -c --arg f "$days_file" '.files[$f].content // "{}" | fromjson')
+
+            # Merge by date: a day seen again is overwritten, never added twice.
+            local all_days total badge
+            all_days=$(jq -n --argjson old "$stored_days" --argjson new "$recent_days" '$old + $new')
+            total=$(jq 'add // 0' <<< "$all_days")
+
+            badge=$(jq -n --arg badge_label "$kind" --arg total "$total" \
+              '{schemaVersion: 1, label: $badge_label, message: $total, color: "blue"}')
+
+            jq -n --arg df "$days_file" --arg bf "$badge_file" \
+              --arg days "$all_days" --arg badge "$badge" \
+              '{files: {($df): {content: $days}, ($bf): {content: $badge}}}' \
+              | GH_TOKEN="$GIST_TOKEN" gh api --method PATCH "gists/${GIST_ID}" --input - > /dev/null
+            echo "Total ${kind} recorded: ${total}"
+          }
+
+          update_gist_counts clones "${REPO_NAME}-days.json" "${REPO_NAME}-clones.json"
+          update_gist_counts views "${REPO_NAME}-views-days.json" "${REPO_NAME}-views.json"

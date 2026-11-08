@@ -1,6 +1,6 @@
 # skills-science-upload
 
-![Last commit](https://img.shields.io/github/last-commit/kenscripts/skills-science-upload) ![Clones](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/kenscripts/bc500b179397ff30ba2613d9226d9e75/raw/skills-science-upload-clones.json)
+![Last commit](https://img.shields.io/github/last-commit/kenscripts/skills-science-upload) ![Clones](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/kenscripts/bc500b179397ff30ba2613d9226d9e75/raw/skills-science-upload-clones.json) ![Views](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/kenscripts/bc500b179397ff30ba2613d9226d9e75/raw/skills-science-upload-views.json)
 
 Claude skills for preparing and uploading data, and other materials, to public repositories and sites.
 
