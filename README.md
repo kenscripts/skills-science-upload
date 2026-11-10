@@ -23,6 +23,14 @@ npx skills add kenscripts/skills-science-upload --list
 npx skills add kenscripts/skills-science-upload --skill upload-ncbi-sra -a claude-code -y
 ```
 
+### As a marketplace (Claude app)
+
+In Claude, open the plugin settings, choose Add marketplace and paste this URL. Skills are then installed from it and updated when the repository changes.
+
+```text
+https://github.com/kenscripts/skills-science-upload
+```
+
 ### Manually
 
 Clone, then copy into `~/.claude/skills/` for all projects or `<project>/.claude/skills/` for one project. Use `ln -s` instead of `cp -r` to follow `git pull`.

@@ -1,0 +1,17 @@
+{
+  "name": "skills-science-upload",
+  "owner": {
+    "name": "Kenneth Acosta"
+  },
+  "plugins": [
+    {
+      "name": "upload-ncbi-sra",
+      "description": "Fill NCBI BioSample and SRA submission templates from curated sample and library metadata.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./upload-ncbi-sra"
+      ]
+    }
+  ]
+}
